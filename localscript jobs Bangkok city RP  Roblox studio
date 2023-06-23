@@ -1,0 +1,61 @@
+local player = game.Players.LocalPlayer
+local jobRoleText = Instance.new("TextLabel")
+local jobGUI = Instance.new("ScreenGui")
+local jobFrame = Instance.new("Frame")
+jobRoleText.Name = "JobRoleText"
+jobRoleText.Text = ""
+jobRoleText.Size = UDim2.new(0, 200, 0, 50)
+jobRoleText.Position = UDim2.new(0, -100, 0, -100)
+jobRoleText.BackgroundTransparency = 1
+jobRoleText.Font = Enum.Font.SourceSansBold
+jobRoleText.TextColor3 = Color3.new(1, 1, 1)
+jobRoleText.TextStrokeTransparency = 0.5
+jobRoleText.TextStrokeColor3 = Color3.new(0, 0, 0)
+jobRoleText.TextSize = 20
+jobRoleText.Parent = player.Character:WaitForChild("Head")
+
+jobGUI.Name = "JobGUI"
+jobGUI.Parent = player.PlayerGui
+jobGUI.Enabled = false
+
+jobFrame.Name = "JobFrame"
+jobFrame.Size = UDim2.new(0, 200, 0, 400)
+jobFrame.Position = UDim2.new(0.02, 0, 0.5, -200)
+jobFrame.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)
+jobFrame.Parent = jobGUI
+
+local jobList = {
+	"Salary Man",
+	"Student",
+	"Teacher",
+	"Doctor",
+	"Police",
+	"Construction Worker",
+	"Taxi Driver",
+	"Shop Keeper",
+	"Street Food Cooker"
+}
+
+local function selectJob(jobName)
+	jobRoleText.Text = "Job Role: " .. jobName
+end
+
+for i, jobName in ipairs(jobList) do
+	local jobButton = Instance.new("TextButton")
+	jobButton.Name = jobName .. "Button"
+	jobButton.Text = jobName
+	jobButton.Size = UDim2.new(0, 150, 0, 50)
+	jobButton.Position = UDim2.new(0, 25, 0, (i-1) * 60)
+	jobButton.Parent = jobFrame
+
+	jobButton.MouseButton1Click:Connect(function()
+		selectJob(jobName)
+		jobGUI.Enabled = false
+	end)
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.J then
+		jobGUI.Enabled = not jobGUI.Enabled
+	end
+end)
